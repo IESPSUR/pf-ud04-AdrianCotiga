@@ -1,8 +1,31 @@
 {% extends 'tienda/base.html' %}
 
 {% block content %}
-	<h2>Listado</h2>
 
-        {{ marca }}
+	<h2>Listado productos</h2>
+
+    <table class="table table-striped">
+        <thread>
+            <th>Nombre</th>
+            <th>Modelo</th>
+            <th>Unidades</th>
+            <th>Precio</th>
+            <th>Detalles</th>
+            <th>Eliminar</th>
+        </thread>
+
+        <tbody>
+            {% for producto in productos %}
+                <tr>
+                    <td>{{producto.nombre}}</td>
+                    <td>{{producto.modelo}}</td>
+                    <td>{{producto.unidades}}</td>
+                    <td>{{producto.precio}}</td>
+                    <td>{{producto.detalles}}</td>
+                    <td><button><a href="#">Eliminar</a></button></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
 {% endblock %}
