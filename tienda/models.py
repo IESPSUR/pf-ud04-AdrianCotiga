@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils import timezone
+
 
 class Marca(models.Model):
     nombre = models.CharField(max_length=100)
@@ -18,8 +20,9 @@ class Producto(models.Model):
         return self.nombre
 
 class Compra(models.Model):
-    fecha = models.DateTimeField()
-    unidades = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    producto = models.ForeignKey(Producto, models.PROTECT)
+    fecha = models.DateTimeField(default=timezone.now)
+    unidades = models.PositiveIntegerField()
     importe = models.IntegerField()
 
     def __str__(self):

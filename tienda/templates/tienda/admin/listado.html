@@ -17,12 +17,20 @@
         <tbody>
             {% for producto in productos %}
                 <tr>
-                    <td>{{producto.nombre}}</td>
+                    <td>
+                        <a href="{% url 'detalles' pk=producto.pk %}">
+                            {{producto.nombre}}
+                        </a>
+                    </td>
                     <td>{{producto.modelo}}</td>
                     <td>{{producto.unidades}}</td>
                     <td>{{producto.precio}}</td>
                     <td>{{producto.detalles}}</td>
-                    <td><button><a href="#">Eliminar</a></button></td>
+                    <td>
+                        <a href="{% url 'eliminar' pk=producto.pk %}">
+                            <button type="button" class="btn btn-danger">Eliminar</button>
+                        </a>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>

@@ -3,4 +3,26 @@
 {% block content %}
 	<h2>Detalles producto</h2>
 
+    <form>
+
+        <fieldset>
+
+            <legend>Formulario producto</legend>
+            {% csrf_token %}
+            {{ producto_form.as_div }}
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a href="{% url 'listado' %}">
+                <button type="button" class="btn btn-secondary">Volver</button>
+            </a>
+
+            {% if producto_form.instance.pk %}
+                <a href="{% url 'eliminar' pk=producto_form.instance.pk %}">
+                    <button type="button" class="btn btn-danger">Eliminar</button>
+                </a>
+            {% endif %}
+
+        </fieldset>
+
+    </form>
+
 {% endblock %}

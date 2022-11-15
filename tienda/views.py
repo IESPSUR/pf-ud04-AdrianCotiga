@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from tienda.models import Producto
+from tienda.forms import ProductoForm
 
 # Create your views here.
 def welcome(request):
@@ -10,14 +11,39 @@ def listado(request):
     producto = Producto.objects.all()
     return render(request, 'tienda/admin/listado.html', { 'productos' : producto })
 
-def detalles(request):
-    return render(request, 'tienda/admin/detalles.html', {})
+def detalles(request, pk):
+    producto = get_object_or_404(Producto, pk=pk)
+
+    if request.method == "POST":
+        form = ProductoForm(request.POST, instance=producto)
+        if form.is_valid():
+            producto = form.save(commit=False)
+            producto.save()
+
+    producto_form = ProductoForm(instance=producto)
+
+    return render(request, 'tienda/admin/detalles.html', {'producto_form': producto_form})
 
 def edicion(request):
-    return render(request, 'tienda/admin/edicion.html', {})
+    producto = Producto.objects.get(id = id)
+    formulario = ProductoForm(request.POST or None, request.FILES or None, isinstance=producto)
+    if formulario.is_valid() and request.POST:
+        formulario.save()
+        return redirect('listado')
+    return render(request, 'tienda/admin/edicion.html', {'formulario': formulario})
 
-def eliminar(request):
-    return render(request, 'tienda/admin/eliminar.html', {})
+def eliminar(request, pk):
+    producto = get_object_or_404(Producto, pk=pk)
+    producto.delete()
+    return redirect('listado')
 
 def nuevo (request):
-    return render(request, 'tienda/admin/nuevo.html', {})
+    if request.method == "POST":
+        form = ProductoForm(request.POST)
+        if form.is_valid():
+            producto = form.save()
+            return redirect('detalles', pk=producto)
+        else:
+            producto_form = ProductoForm()
+
+    return render(request, 'tienda/admin/detalles.html', {'formulario': formulario})
