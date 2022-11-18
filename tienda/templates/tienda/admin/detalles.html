@@ -3,15 +3,21 @@
 {% block content %}
 	<h2>Detalles producto</h2>
 
-    <form>
+    <form method="post">
 
         <fieldset>
 
             <legend>Formulario producto</legend>
+
             {% csrf_token %}
             {{ producto_form.as_div }}
+
             <br>
-            <button type="submit" class="btn btn-primary">Guardar</button>
+
+            <a href="{% url 'listado' %}">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            </a>
+
             <a href="{% url 'listado' %}">
                 <button type="button" class="btn btn-secondary">Volver</button>
             </a>

@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from tienda.models import Producto
 from tienda.forms import ProductoForm
+from django.shortcuts import redirect
 
 # Create your views here.
 def welcome(request):
@@ -19,6 +20,7 @@ def detalles(request, pk):
         if form.is_valid():
             producto = form.save(commit=False)
             producto.save()
+            return redirect('listado')
 
     producto_form = ProductoForm(instance=producto)
 
@@ -38,15 +40,9 @@ def eliminar(request, pk):
     return redirect('listado')
 
 def nuevo (request):
-    # if request.method == "POST":
-    #     form = ProductoForm(request.POST)
-    #     if form.is_valid():
-    #         producto = form.save()
-    #         return redirect('detalles', pk=producto)
-    #     else:
-    #         producto_form = ProductoForm()
+    formulario = ProductoForm()
+    if formulario.is_valid() and request.POST:
+        formulario.save()
+        return redirect('listado')
 
-    #return render(request, 'tienda/admin/nuevo.html', {'formulario': formulario})
-
-    formulario = ProductoForm(request.POST or None)
-    return render(request, 'tienda/admin/nuevo.html', {'formulario': formulario})
+    return render(request, 'tienda/admin/detalles.html', {'formulario': formulario})
