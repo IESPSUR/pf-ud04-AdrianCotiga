@@ -38,12 +38,15 @@ def eliminar(request, pk):
     return redirect('listado')
 
 def nuevo (request):
-    if request.method == "POST":
-        form = ProductoForm(request.POST)
-        if form.is_valid():
-            producto = form.save()
-            return redirect('detalles', pk=producto)
-        else:
-            producto_form = ProductoForm()
+    # if request.method == "POST":
+    #     form = ProductoForm(request.POST)
+    #     if form.is_valid():
+    #         producto = form.save()
+    #         return redirect('detalles', pk=producto)
+    #     else:
+    #         producto_form = ProductoForm()
 
-    return render(request, 'tienda/admin/detalles.html', {'formulario': formulario})
+    #return render(request, 'tienda/admin/nuevo.html', {'formulario': formulario})
+
+    formulario = ProductoForm(request.POST or None)
+    return render(request, 'tienda/admin/nuevo.html', {'formulario': formulario})
