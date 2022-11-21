@@ -11,6 +11,7 @@
             <th>Precio</th>
             <th>Detalles</th>
             <th>Marca</th>
+            <th></th>
         </thread>
 
         <tbody>
@@ -23,13 +24,13 @@
                     <td>{{producto.detalles}}</td>
                     <td>{{producto.marca}}</td>
                     <td>
-                        <a href="{% url 'checkout' pk=producto.pk %}">
+                        <a href="{% url 'checkout' producto.pk %}">
                             <button type="submit" class="btn btn-primary">Comprar</button>
                         </a>
                     </td>
                 </tr>
             {% endfor %}
         </tbody>
-    </table>
+        </table>
 
 {% endblock %}

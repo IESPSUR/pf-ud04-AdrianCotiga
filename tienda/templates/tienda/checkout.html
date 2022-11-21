@@ -4,6 +4,7 @@
 	<h2>Checkout</h2>
 
     <table class="table table-striped">
+
         <thread>
             <th>Nombre</th>
             <th>Modelo</th>
@@ -14,7 +15,6 @@
         </thread>
 
         <tbody>
-            {% for producto in productos %}
                 <tr>
                     <td>{{producto.nombre}}</td>
                     <td>{{producto.modelo}}</td>
@@ -23,7 +23,6 @@
                     <td>{{producto.detalles}}</td>
                     <td>{{producto.marca}}</td>
                 </tr>
-            {% endfor %}
         </tbody>
     </table>
 
@@ -36,8 +35,11 @@
             {{ compra_form.as_div }}
 
             <br>
-            <a>
-                <button type="submit" class="btn btn-primary">Comprar</button>
+            <a href="{% url 'compra' %}">
+                <button type="submit" class="btn btn-primary">Confirmar compra</button>
+            </a>
+            <a href="{% url 'compra' %}">
+                <button type="button" class="btn btn-secondary">Volver</button>
             </a>
 
         <fieldset>

@@ -3,11 +3,13 @@
 {% block content %}
 
 	<h2>Listado productos</h2>
+
     <p>
         <a href="{% url 'nuevo' %}">
             <button type="button" class="btn btn-success">Nuevo</button>
         </a>
     </p>
+
     <table class="table table-striped">
         <thread>
             <th>Nombre</th>
@@ -23,7 +25,7 @@
             {% for producto in productos %}
                 <tr>
                     <td>
-                        <a href="{% url 'detalles' pk=producto.pk %}">
+                        <a href="{% url 'edicion' pk=producto.pk %}">
                             {{producto.nombre}}
                         </a>
                     </td>

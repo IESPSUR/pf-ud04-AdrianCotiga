@@ -1,10 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views import generic
+#from django.views import generic
 from tienda.models import Producto
 from tienda.models import Compra
 from tienda.forms import ProductoForm
 from tienda.forms import CompraForm
 from django.shortcuts import redirect
+from django.db.models import F
 
 # Create your views here.
 def welcome(request):
@@ -14,7 +15,7 @@ def listado(request):
     producto = Producto.objects.all()
     return render(request, 'tienda/admin/listado.html', { 'productos' : producto })
 
-def detalles(request, pk):
+def edicion(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
 
     if request.method == "POST":
@@ -27,15 +28,7 @@ def detalles(request, pk):
 
     producto_form = ProductoForm(instance=producto)
 
-    return render(request, 'tienda/admin/detalles.html', {'producto_form': producto_form})
-
-def edicion(request):
-    producto = Producto.objects.get(id = id)
-    formulario = ProductoForm(request.POST or None, request.FILES or None, isinstance=producto)
-    if formulario.is_valid() and request.POST:
-        formulario.save()
-        return redirect('listado')
-    return render(request, 'tienda/admin/edicion.html', {'formulario': formulario})
+    return render(request, 'tienda/admin/edicion.html', {'producto_form': producto_form})
 
 def eliminar(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
@@ -54,17 +47,29 @@ def nuevo (request):
             producto.save()
             return redirect('listado')
 
-    return render(request, 'tienda/admin/detalles.html', {'producto_form': producto_form})
+    return render(request, 'tienda/admin/edicion.html', {'producto_form': producto_form})
 
 def compra (request):
     producto = Producto.objects.all()
     return render(request, 'tienda/compra.html', { 'productos' : producto })
 
 def checkout (request, pk):
-    compra = Compra.__new__(Compra)
+    producto = get_object_or_404(Producto, pk=pk);
     compra_form = CompraForm()
-
     if request.method == "POST":
         form = CompraForm(request.POST)
 
-    return render(request, 'tienda/checkout.html', {'compra_form': compra_form})
+        if form.is_valid():
+            compra = form.save(commit=False)
+            compra.producto = producto
+            compra.importe = compra.unidades * producto.precio
+            producto.unidades = producto.unidades - compra.unidades
+            compra.save()
+            producto.save()
+            return redirect('compra')
+
+    return render(request, 'tienda/checkout.html', {'producto':producto, 'compra_form': compra_form})
+
+def informes (request):
+    compra = Compra.objects.all()
+    return render(request, 'tienda/informes.html', {'compras': compra})

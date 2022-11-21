@@ -1,0 +1,35 @@
+{% extends 'tienda/base.html' %}
+
+{% block content %}
+
+	<h2>Informes</h2>
+
+    <h5>Productos por marca</h5>
+    <h5>Top 10 productos vendidos</h5>
+    <h5>Compras de un usuario</h5>
+
+    {{ compra }}
+
+        <table class="table table-striped">
+        <thread>
+            <th>Producto</th>
+            <th>Fecha</th>
+            <th>Unidades</th>
+            <th>Importe</th>
+        </thread>
+
+        <tbody>
+            {% for compra in compras %}
+                <tr>
+                    <td>{{compra.producto}}</td>
+                    <td>{{compra.fecha}}</td>
+                    <td>{{compra.unidades}}</td>
+                    <td>{{compra.importe}} €</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h5>Top 10 mejores clientes</h5>
+
+{% endblock %}
