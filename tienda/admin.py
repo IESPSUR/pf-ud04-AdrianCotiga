@@ -5,4 +5,4 @@ from .models import Compra
 
 admin.site.register(Marca)
 admin.site.register(Producto)
-# admin.site.register(Compra)
+admin.site.register(Compra)

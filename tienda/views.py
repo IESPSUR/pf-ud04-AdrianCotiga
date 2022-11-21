@@ -1,7 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from tienda.models import Producto
+from tienda.models import Compra
 from tienda.forms import ProductoForm
+from tienda.forms import CompraForm
 from django.shortcuts import redirect
 
 # Create your views here.
@@ -17,6 +19,7 @@ def detalles(request, pk):
 
     if request.method == "POST":
         form = ProductoForm(request.POST, instance=producto)
+
         if form.is_valid():
             producto = form.save(commit=False)
             producto.save()
@@ -40,9 +43,28 @@ def eliminar(request, pk):
     return redirect('listado')
 
 def nuevo (request):
-    formulario = ProductoForm()
-    if formulario.is_valid() and request.POST:
-        formulario.save()
-        return redirect('listado')
+    producto = Producto.__new__(Producto)
+    producto_form = ProductoForm()
 
-    return render(request, 'tienda/admin/detalles.html', {'formulario': formulario})
+    if request.method == "POST":
+        form = ProductoForm(request.POST)
+
+        if form.is_valid():
+            producto = form.save(commit=False)
+            producto.save()
+            return redirect('listado')
+
+    return render(request, 'tienda/admin/detalles.html', {'producto_form': producto_form})
+
+def compra (request):
+    producto = Producto.objects.all()
+    return render(request, 'tienda/compra.html', { 'productos' : producto })
+
+def checkout (request, pk):
+    compra = Compra.__new__(Compra)
+    compra_form = CompraForm()
+
+    if request.method == "POST":
+        form = CompraForm(request.POST)
+
+    return render(request, 'tienda/checkout.html', {'compra_form': compra_form})
