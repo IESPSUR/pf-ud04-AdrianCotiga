@@ -1,13 +1,12 @@
 from django.shortcuts import render, get_object_or_404, redirect
-#from django.views import generic
 from tienda.models import Producto
 from tienda.models import Compra
+from tienda.models import Marca
 from tienda.forms import ProductoForm
 from tienda.forms import CompraForm
 from django.shortcuts import redirect
-from django.db.models import F
+from django.db import transaction
 
-# Create your views here.
 def welcome(request):
     return render(request,'tienda/index.html', {})
 
@@ -22,7 +21,6 @@ def edicion(request, pk):
         form = ProductoForm(request.POST, instance=producto)
 
         if form.is_valid():
-            producto = form.save(commit=False)
             producto.save()
             return redirect('listado')
 
@@ -36,7 +34,7 @@ def eliminar(request, pk):
     return redirect('listado')
 
 def nuevo (request):
-    producto = Producto.__new__(Producto)
+    producto = Producto()
     producto_form = ProductoForm()
 
     if request.method == "POST":
@@ -53,6 +51,7 @@ def compra (request):
     producto = Producto.objects.all()
     return render(request, 'tienda/compra.html', { 'productos' : producto })
 
+@transaction.atomic()
 def checkout (request, pk):
     producto = get_object_or_404(Producto, pk=pk);
     compra_form = CompraForm()
@@ -70,6 +69,9 @@ def checkout (request, pk):
 
     return render(request, 'tienda/checkout.html', {'producto':producto, 'compra_form': compra_form})
 
+
 def informes (request):
+    marca = Marca.objects.all()
+    producto = Producto.objects.all()
     compra = Compra.objects.all()
-    return render(request, 'tienda/informes.html', {'compras': compra})
+    return render(request, 'tienda/informes.html', {'marcas': marca ,'productos': producto, 'compras': compra})
