@@ -1,7 +1,7 @@
 git clone url
 cd project
 python3 -m venv venv
-source venv/bin/activate
+source venvs/pf-ud04-AdrianCotiga/bin/activate
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 python manage.py migrate
