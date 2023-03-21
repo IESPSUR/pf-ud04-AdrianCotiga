@@ -1,6 +1,7 @@
+from django.db import transaction
 from django.shortcuts import render, get_object_or_404, redirect
 
-from tienda.forms import ProductoForm
+from tienda.forms import ProductoForm, CompraForm
 from tienda.models import Producto
 
 
@@ -49,3 +50,26 @@ def nuevo(request):
             return redirect('listado')
 
     return render(request, 'tienda/admin/edicion.html', {'producto_form': producto_form})
+
+
+def compra(request):
+    producto = Producto.objects.all()
+    return render(request, 'tienda/compra.html', {'producto': producto})
+
+
+@transaction.atomic()
+def checkout(request, pk):
+    producto = get_object_or_404(Producto, pk=pk);
+    compra_form = CompraForm()
+    if request.method == "POST":
+        form = CompraForm(request.POST)
+
+        if form.is_valid():
+            compra = form.save(commit=False)
+            compra.producto = producto
+            compra.importe = compra.unidades * producto.precio
+            producto.unidades = producto.unidades - compra.unidades
+            producto.save()
+            return redirect('compra')
+
+    return render(request, 'tienda/checkout.html', {'producto': producto, 'compra_form': compra_form})
