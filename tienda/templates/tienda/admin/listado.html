@@ -8,6 +8,12 @@
             <button type="button" class="btn btn-success">Nuevo</button>
         </a>
     </div>
+    <form method="POST" action="{% url 'listado' %}">
+        {% csrf_token %}
+        <input type="text" id="nombre" name="nombre" placeholder="Nombre del producto">
+        <button type="submit">Buscar</button>
+    </form>
+
 
     <table class="table table-striped">
         <thread>
@@ -31,18 +37,21 @@
                 <td>{{ producto.precio }} €</td>
                 <td>{{ producto.detalles }}</td>
                 <td>
-                    <a href="{% url 'eliminar' producto.pk %}">
-                        <button type="button" class="btn btn-danger">Eliminar</button>
-                    </a>
-                </td>
-                <td>
                     <a href="{% url 'edicion' producto.pk %}">
                         <button type="button" class="btn btn-primary">Editar</button>
                     </a>
                 </td>
+                <td>
+                    <a href="{% url 'eliminar' producto.pk %}">
+                        <button type="button" class="btn btn-danger">Eliminar</button>
+                    </a>
+                </td>
             </tr>
+        {% empty %}
+            <div>Ninguna coincidencia</div>
         {% endfor %}
         </tbody>
     </table>
+
 
 {% endblock %}

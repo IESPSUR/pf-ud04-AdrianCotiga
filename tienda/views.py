@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.db import transaction
 from django.shortcuts import render, get_object_or_404, redirect
 
@@ -10,7 +11,13 @@ def welcome(request):
 
 
 def listado(request):
-    producto = Producto.objects.all()
+    if request.method == 'POST':
+        nombre = request.POST.get('nombre')
+        producto = Producto.objects.filter(nombre__icontains=nombre)
+
+    else:
+        producto = Producto.objects.all()
+
     return render(request, 'tienda/admin/listado.html', {'producto': producto})
 
 
@@ -31,6 +38,7 @@ def edicion(request, pk):
 
 def eliminar(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
+
     if request.method == "POST":
         producto.delete()
         return redirect('listado')
@@ -56,20 +64,24 @@ def compra(request):
     producto = Producto.objects.all()
     return render(request, 'tienda/compra.html', {'producto': producto})
 
-
 @transaction.atomic()
 def checkout(request, pk):
-    producto = get_object_or_404(Producto, pk=pk);
-    compra_form = CompraForm()
-    if request.method == "POST":
-        form = CompraForm(request.POST)
+    producto = get_object_or_404(Producto, pk=pk)
 
-        if form.is_valid():
-            compra = form.save(commit=False)
+    if request.method == 'POST':
+        compra_form = CompraForm(request.POST)
+
+        if compra_form.is_valid():
+            compra = compra_form.save(commit=False)
             compra.producto = producto
             compra.importe = compra.unidades * producto.precio
-            producto.unidades = producto.unidades - compra.unidades
+            compra.usuario = request.user
+            producto.unidades -= compra.unidades
             producto.save()
+            compra.save()
             return redirect('compra')
+
+    else:
+        compra_form = CompraForm()
 
     return render(request, 'tienda/checkout.html', {'producto': producto, 'compra_form': compra_form})

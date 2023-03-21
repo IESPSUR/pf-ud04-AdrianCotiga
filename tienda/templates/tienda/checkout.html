@@ -26,18 +26,14 @@
         </tbody>
     </table>
 
-
     <form method="post">
 
         <fieldset>
-
             {% csrf_token %}
             {{ compra_form.as_div }}
 
-            <br>
-            <a href="{% url 'compra' %}">
-                <button type="submit" class="btn btn-primary">Confirmar</button>
-            </a>
+            <button type="submit" class="btn btn-primary">Confirmar</button>
+
             <a href="{% url 'compra' %}">
                 <button type="button" class="btn btn-secondary">Volver</button>
             </a>
