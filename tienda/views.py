@@ -15,6 +15,7 @@ def listado(request):
 
 def edicion(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
+
     if request.method == "POST":
         form = ProductoForm(request.POST, instance=producto)
 
@@ -23,6 +24,8 @@ def edicion(request, pk):
             return redirect('listado')
 
     producto_form = ProductoForm(instance=producto)
+
+    return render(request, 'tienda/admin/edicion.html', {'producto_form': producto_form})
 
 
 def eliminar(request, pk):

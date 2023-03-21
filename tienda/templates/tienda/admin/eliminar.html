@@ -6,7 +6,7 @@
     <form method="post">
         {% csrf_token %}
 
-        <p>¿Borrar <b>{{ producto.nombre }}</b>?</p>
+        <p>¿Eliminar <b>{{ producto.nombre }}</b>?</p>
 
         <a href="{% url 'listado' %}">
             <input type="submit" class="btn btn-primary" value="Aceptar">
