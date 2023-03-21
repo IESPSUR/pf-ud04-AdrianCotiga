@@ -1,0 +1,20 @@
+{% extends 'tienda/base.html' %}
+
+{% block content %}
+    <h2>Eliminar</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <p>¿Borrar <b>{{ producto.nombre }}</b>?</p>
+
+        <a href="{% url 'listado' %}">
+            <input type="submit" class="btn btn-primary" value="Aceptar">
+        </a>
+        <a href="{% url 'listado' %}">
+            <input type="button" class="btn btn-secondary" value="Cancelar">
+        </a>
+
+    </form>
+
+{% endblock %}
