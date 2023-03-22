@@ -11,9 +11,9 @@ def welcome(request):
 
 
 def listado(request):
-    if request.method == 'POST':
+    if request.method == 'GET':
         nombre = request.POST.get('nombre')
-        producto = Producto.objects.filter(nombre__icontains=nombre)
+        producto = Producto.objects.filter(nombre__icontains=nombre) #crear un formulario en forms.py
 
     else:
         producto = Producto.objects.all()
