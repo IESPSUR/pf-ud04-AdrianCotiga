@@ -12,3 +12,10 @@ class CompraForm(forms.ModelForm):
         model = Compra
         fields = ['unidades']
         unidades = forms.IntegerField(min_value=1)
+
+class FiltroForm(forms.ModelForm):
+    nombre = forms.CharField(required=False)
+
+    class Meta:
+        model = Producto
+        fields = ['nombre']

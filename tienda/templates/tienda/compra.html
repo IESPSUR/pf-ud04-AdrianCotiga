@@ -12,25 +12,27 @@
             <th>Precio</th>
             <th>Detalles</th>
             <th></th>
-        </thread>
 
-        <tbody>
-        {% for producto in producto %}
-            <tr>
-                <td>{{ producto.nombre }}</td>
-                <td>{{ producto.marca }}</td>
-                <td>{{ producto.modelo }}</td>
-                <td>{{ producto.unidades }}</td>
-                <td>{{ producto.precio }}</td>
-                <td>{{ producto.detalles }}</td>
-                <td>
-                    <a href="{% url 'checkout' producto.pk %}">
-                        <button type="submit" class="btn btn-primary">Comprar</button>
-                    </a>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
+            {% for producto in productos %}
+
+                </thread>
+
+                <tbody>
+                <tr>
+                    <td>{{ producto.nombre }}</td>
+                    <td>{{ producto.marca }}</td>
+                    <td>{{ producto.modelo }}</td>
+                    <td>{{ producto.unidades }}</td>
+                    <td>{{ producto.precio }}</td>
+                    <td>{{ producto.detalles }}</td>
+                    <td>
+                        <a href="{% url 'checkout' producto.pk %}">
+                            <button type="submit" class="btn btn-primary">Comprar</button>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
     </table>
 
 {% endblock %}

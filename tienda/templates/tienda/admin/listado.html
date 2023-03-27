@@ -8,14 +8,17 @@
             <button type="button" class="btn btn-success">Nuevo</button>
         </a>
     </div>
+
     <form method="GET" action="{% url 'listado' %}">
         {% csrf_token %}
+        {{ filtro_form.as_p }}
+
         <input type="text" id="nombre" name="nombre" placeholder="Nombre del producto">
         <button type="submit">Buscar</button>
     </form>
 
-
     <table class="table table-striped">
+
         <thread>
             <th>Nombre</th>
             <th>Marca</th>
@@ -25,33 +28,35 @@
             <th>Detalles</th>
             <th></th>
             <th></th>
-        </thread>
 
-        <tbody>
-        {% for producto in producto %}
-            <tr>
-                <td>{{ producto.nombre }}</td>
-                <td>{{ producto.marca }}</td>
-                <td>{{ producto.modelo }}</td>
-                <td>{{ producto.unidades }}</td>
-                <td>{{ producto.precio }} €</td>
-                <td>{{ producto.detalles }}</td>
-                <td>
-                    <a href="{% url 'edicion' producto.pk %}">
-                        <button type="button" class="btn btn-primary">Editar</button>
-                    </a>
-                </td>
-                <td>
-                    <a href="{% url 'eliminar' producto.pk %}">
-                        <button type="button" class="btn btn-danger">Eliminar</button>
-                    </a>
-                </td>
-            </tr>
-        {% empty %}
-            <div>Ninguna coincidencia</div>
-        {% endfor %}
-        </tbody>
+            {% for producto in productos %}
+
+                </thread>
+
+                <tbody>
+                <tr>
+                    <td>{{ producto.nombre }}</td>
+                    <td>{{ producto.marca }}</td>
+                    <td>{{ producto.modelo }}</td>
+                    <td>{{ producto.unidades }}</td>
+                    <td>{{ producto.precio }} €</td>
+                    <td>{{ producto.detalles }}</td>
+                    <td>
+                        <a href="{% url 'edicion' producto.pk %}">
+                            <button type="button" class="btn btn-primary">Editar</button>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{% url 'eliminar' producto.pk %}">
+                            <button type="button" class="btn btn-danger">Eliminar</button>
+                        </a>
+                    </td>
+                </tr>
+            {% empty %}
+                <div>Ninguna coincidencia</div>
+            {% endfor %}
+            </tbody>
+
     </table>
-
 
 {% endblock %}

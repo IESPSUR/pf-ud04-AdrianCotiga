@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.db import transaction
 from django.shortcuts import render, get_object_or_404, redirect
 
-from tienda.forms import ProductoForm, CompraForm
+from tienda.forms import ProductoForm, CompraForm, FiltroForm
 from tienda.models import Producto
 
 
@@ -11,14 +11,19 @@ def welcome(request):
 
 
 def listado(request):
+    producto = Producto.objects.all()
+
     if request.method == 'GET':
-        nombre = request.POST.get('nombre')
-        producto = Producto.objects.filter(nombre__icontains=nombre) #crear un formulario en forms.py
+        filtro_nombre = FiltroForm(request.GET)
 
-    else:
-        producto = Producto.objects.all()
+        if filtro_nombre.is_valid():
+            nombre = request.GET.get('nombre')
 
-    return render(request, 'tienda/admin/listado.html', {'producto': producto})
+            if nombre:
+                producto = Producto.objects.filter(nombre__icontains=nombre)
+
+    return render(request, 'tienda/admin/listado.html', {'productos': producto})
+
 
 
 def edicion(request, pk):
@@ -62,7 +67,8 @@ def nuevo(request):
 
 def compra(request):
     producto = Producto.objects.all()
-    return render(request, 'tienda/compra.html', {'producto': producto})
+    return render(request, 'tienda/compra.html', {'productos': producto})
+
 
 @transaction.atomic()
 def checkout(request, pk):
