@@ -17,13 +17,12 @@ def listado(request):
         filtro_nombre = FiltroForm(request.GET)
 
         if filtro_nombre.is_valid():
-            nombre = request.GET.get('nombre')
+            nombre = filtro_nombre.cleaned_data['nombre']
 
             if nombre:
                 producto = Producto.objects.filter(nombre__icontains=nombre)
 
-    return render(request, 'tienda/admin/listado.html', {'productos': producto})
-
+    return render(request, 'tienda/admin/listado.html', {'productos': producto, 'filtro_form': filtro_nombre})
 
 
 def edicion(request, pk):
@@ -82,6 +81,12 @@ def checkout(request, pk):
             compra.producto = producto
             compra.importe = compra.unidades * producto.precio
             compra.usuario = request.user
+
+            if compra.unidades > producto.unidades:
+                mensaje = f"No hay suficientes unidades disponibles de "
+                return render(request, 'tienda/checkout.html',
+                              {'producto': producto, 'compra_form': compra_form, 'mensaje': mensaje})
+
             producto.unidades -= compra.unidades
             producto.save()
             compra.save()

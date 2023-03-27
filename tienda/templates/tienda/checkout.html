@@ -29,6 +29,11 @@
     <form method="post">
 
         <fieldset>
+
+            {% if mensaje %}
+                <div class="alert alert-danger">{{ mensaje }} <b>{{ producto.nombre }}</b>.</div>
+            {% endif %}
+
             {% csrf_token %}
             {{ compra_form.as_div }}
 

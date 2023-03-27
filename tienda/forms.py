@@ -5,7 +5,7 @@ from .models import Producto, Compra
 class ProductoForm(forms.ModelForm):
     class Meta:
         model = Producto
-        fields = "__all__"
+        fields = "__all__" #poner todos los campos
 
 class CompraForm(forms.ModelForm):
     class Meta:
