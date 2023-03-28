@@ -11,7 +11,10 @@ urlpatterns = [
     path('tienda/admin/eliminar/<int:pk>/', views.eliminar, name='eliminar'),
     path('tienda/admin/nuevo/', views.nuevo, name='nuevo'),
 
-    #Compra
+    # Compra
     path('tienda/compra/', views.compra, name='compra'),
     path('tienda/checkout/<int:pk>/', views.checkout, name='checkout'),
+
+    # Informes
+    path('tienda/informes/', views.informes, name='informes'),
 ]

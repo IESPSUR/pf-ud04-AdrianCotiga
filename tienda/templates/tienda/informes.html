@@ -1,0 +1,106 @@
+{% extends 'tienda/base.html' %}
+
+{% block content %}
+    <h2>Informes</h2>
+
+    <h5>>> Productos por marca <<</h5>
+
+    <form method="GET" action="{% url 'informes' %}">
+        {% csrf_token %}
+        {{ filtro_marca.as_p }}
+
+        <button type="submit">Filtrar</button>
+    </form>
+
+    {% if productos %}
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Unidades</th>
+                <th>Precio</th>
+                <th>Detalles</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            {% for producto in productos %}
+
+                <tr>
+                    <td>{{ producto.nombre }}</td>
+                    <td>{{ producto.marca }}</td>
+                    <td>{{ producto.modelo }}</td>
+                    <td>{{ producto.unidades }}</td>
+                    <td>{{ producto.precio }} €</td>
+                    <td>{{ producto.detalles }}</td>
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+        </table>
+
+    {% endif %}
+
+    <h5>>> Top ten productos vendidos <<</h5>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Unidades vendidas</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for producto in productos_vendidos %}
+            <tr>
+                <td>{{ producto.nombre }}</td>
+                <td>{{ producto.total_vendido }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <h5>>> Compras del usuario <<</h5>
+
+    {% if compras %}
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Unidades</th>
+                <th>Importe</th>
+                <th>Usuario</th>
+                <th>Fecha y hora</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            {% for compras in compras %}
+
+                <tr>
+                    <td>{{ compras.producto }}</td>
+                    <td>{{ compras.unidades }}</td>
+                    <td>{{ compras.importe }} €</td>
+                    <td>{{ compras.usuario }}</td>
+                    <td>{{ compras.fecha }}</td>
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+        </table>
+
+    {% endif %}
+
+    <h5>>> Top ten mejores clientes <<</h5>
+
+
+
+{% endblock %}

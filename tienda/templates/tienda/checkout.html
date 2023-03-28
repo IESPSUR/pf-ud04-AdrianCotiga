@@ -16,12 +16,12 @@
 
         <tbody>
         <tr>
-            <td>{{ producto.nombre }}</td>
-            <td>{{ producto.marca }}</td>
-            <td>{{ producto.modelo }}</td>
-            <td>{{ producto.unidades }}</td>
-            <td>{{ producto.precio }}</td>
-            <td>{{ producto.detalles }}</td>
+            <td>{{ productos.nombre }}</td>
+            <td>{{ productos.marca }}</td>
+            <td>{{ productos.modelo }}</td>
+            <td>{{ productos.unidades }}</td>
+            <td>{{ productos.precio }}</td>
+            <td>{{ productos.detalles }}</td>
         </tr>
         </tbody>
     </table>
@@ -31,7 +31,7 @@
         <fieldset>
 
             {% if mensaje %}
-                <div class="alert alert-danger">{{ mensaje }} <b>{{ producto.nombre }}</b>.</div>
+                <div class="alert alert-danger">{{ mensaje }} <b>{{ productos.nombre }}</b>.</div>
             {% endif %}
 
             {% csrf_token %}

@@ -28,7 +28,7 @@ class Compra(models.Model):
     fecha = models.DateTimeField(default=timezone.now)
     unidades = models.PositiveIntegerField()
     importe = models.DecimalField(max_digits=8, decimal_places=2, validators=[MinValueValidator(0.00)])
-    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return str(self.fecha)

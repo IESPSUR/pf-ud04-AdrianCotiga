@@ -1,9 +1,8 @@
-from django.contrib import messages
 from django.db import transaction
+from django.db.models import Sum
 from django.shortcuts import render, get_object_or_404, redirect
-
-from tienda.forms import ProductoForm, CompraForm, FiltroForm
-from tienda.models import Producto
+from tienda.forms import ProductoForm, CompraForm, FiltroForm, MarcaForm
+from tienda.models import Producto, Compra
 
 
 def welcome(request):
@@ -47,7 +46,7 @@ def eliminar(request, pk):
         producto.delete()
         return redirect('listado')
 
-    return render(request, 'tienda/admin/eliminar.html', {'producto': producto})
+    return render(request, 'tienda/admin/eliminar.html', {'productos': producto})
 
 
 def nuevo(request):
@@ -83,9 +82,9 @@ def checkout(request, pk):
             compra.usuario = request.user
 
             if compra.unidades > producto.unidades:
-                mensaje = f"No hay suficientes unidades disponibles de "
+                mensaje = "No hay suficientes unidades disponibles de "
                 return render(request, 'tienda/checkout.html',
-                              {'producto': producto, 'compra_form': compra_form, 'mensaje': mensaje})
+                              {'productos': producto, 'compra_form': compra_form, 'mensaje': mensaje})
 
             producto.unidades -= compra.unidades
             producto.save()
@@ -95,4 +94,29 @@ def checkout(request, pk):
     else:
         compra_form = CompraForm()
 
-    return render(request, 'tienda/checkout.html', {'producto': producto, 'compra_form': compra_form})
+    return render(request, 'tienda/checkout.html', {'productos': producto, 'compra_form': compra_form})
+
+
+def informes(request):
+    # Productos por marca
+    if request.GET.get("marca"):
+        filtro_marca = MarcaForm(request.GET)
+
+        if filtro_marca.is_valid():
+            marca = filtro_marca.cleaned_data.get('marca')
+            productos = Producto.objects.filter(marca__nombre=marca)
+
+    else:
+        filtro_marca = MarcaForm()
+        productos = Producto.objects.all()
+
+    # Top ten productos vendidos
+    productos_vendidos = Producto.objects.annotate(total_vendido=Sum('compra__unidades')).order_by('-total_vendido')[
+                         :10]
+
+    # Compras del usuario
+    compras = Compra.objects.all()
+
+    return render(request, 'tienda/informes.html',
+                  {'productos': productos, 'filtro_marca': filtro_marca, 'compras': compras,
+                   'productos_vendidos': productos_vendidos})
