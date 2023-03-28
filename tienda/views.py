@@ -1,6 +1,8 @@
+from django.contrib.auth.models import User
 from django.db import transaction
 from django.db.models import Sum
 from django.shortcuts import render, get_object_or_404, redirect
+
 from tienda.forms import ProductoForm, CompraForm, FiltroForm, MarcaForm
 from tienda.models import Producto, Compra
 
@@ -115,8 +117,11 @@ def informes(request):
                          :10]
 
     # Compras del usuario
-    compras = Compra.objects.all()
+    compras = Compra.objects.all()  # pendiente de filtrar por usuario de compra
+
+    # Top ten mejores clientes
+    mejores_clientes = User.objects.annotate(total_gastado=Sum('compra__importe')).order_by('-total_gastado')[:10]
 
     return render(request, 'tienda/informes.html',
                   {'productos': productos, 'filtro_marca': filtro_marca, 'compras': compras,
-                   'productos_vendidos': productos_vendidos})
+                   'productos_vendidos': productos_vendidos, 'mejores_clientes': mejores_clientes})
