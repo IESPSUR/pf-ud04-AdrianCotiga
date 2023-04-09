@@ -12,6 +12,7 @@
             <th>Precio</th>
             <th>Detalles</th>
             <th></th>
+            <th></th>
 
             {% for producto in productos %}
 
@@ -34,5 +35,9 @@
             {% endfor %}
             </tbody>
     </table>
+
+    <a href="{% url 'welcome' %}">
+        <input type="button" class="btn btn-secondary" value="Atrás">
+    </a>
 
 {% endblock %}

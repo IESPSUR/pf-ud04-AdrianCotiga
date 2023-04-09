@@ -30,18 +30,26 @@
 
         <fieldset>
 
-            {% if mensaje %}
-                <div class="alert alert-danger">{{ mensaje }} <b>{{ productos.nombre }}</b>.</div>
-            {% endif %}
-
             {% csrf_token %}
             {{ compra_form.as_div }}
+
+            <br>
 
             <button type="submit" class="btn btn-primary">Confirmar</button>
 
             <a href="{% url 'compra' %}">
                 <button type="button" class="btn btn-secondary">Volver</button>
             </a>
+
+            <br><br>
+
+            {% if errorInsuficientesUnidades %}
+                <div class="alert alert-danger">{{ errorInsuficientesUnidades }} <b>{{ productos.nombre }}</b>.</div>
+            {% endif %}
+
+            {% if errorCeroUnidades %}
+                <div class="alert alert-danger">{{ errorCeroUnidades }}</div>
+            {% endif %}
 
         </fieldset>
 

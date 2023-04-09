@@ -9,6 +9,8 @@
         </a>
     </div>
 
+    <br>
+
     <form method="GET" action="{% url 'listado' %}">
         {% csrf_token %}
         {{ filtro_form.as_p }}
@@ -62,5 +64,9 @@
         <div class="alert alert-info">Ninguna coincidencia encontrada.</div>
 
     {% endif %}
+
+    <a href="{% url 'welcome' %}">
+        <input type="button" class="btn btn-secondary" value="Atrás">
+    </a>
 
 {% endblock %}

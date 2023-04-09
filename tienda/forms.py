@@ -1,6 +1,7 @@
 import itertools
 
 from django import forms
+from django.contrib.auth.models import User
 
 from .models import Producto, Compra, Marca
 
@@ -33,6 +34,4 @@ class MarcaForm(forms.Form):
 
 
 class UsuarioForm(forms.Form):
-    class Meta:
-        model = Compra
-        fields = ['usuario']
+    usuario = forms.ModelChoiceField(queryset=User.objects.all())

@@ -17,4 +17,8 @@ urlpatterns = [
 
     # Informes
     path('tienda/informes/', views.informes, name='informes'),
+    path('tienda/informes/productosMarca', views.productosMarca, name='productosMarca'),
+    path('tienda/informes/productosVendidos', views.productosVendidos, name='productosVendidos'),
+    path('tienda/informes/comprasUsuario', views.comprasUsuario, name='comprasUsuario'),
+    path('tienda/informes/mejoresClientes', views.mejoresClientes, name='mejoresClientes'),
 ]
