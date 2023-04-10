@@ -2,7 +2,6 @@
 
 {% block content %}
     <h2>Compra</h2>
-
     <table class="table table-striped">
         <thread>
             <th>Nombre</th>
@@ -13,42 +12,30 @@
             <th>Detalles</th>
             <th>Uds. a comprar</th>
             <th></th>
-
-            {% for producto in productos %}
-
-                </thread>
-
-                <tbody>
-                <tr>
-                    <td>{{ producto.nombre }}</td>
-                    <td>{{ producto.marca }}</td>
-                    <td>{{ producto.modelo }}</td>
-                    <td>{{ producto.unidades }}</td>
-                    <td>{{ producto.precio }}</td>
-                    <td>{{ producto.detalles }}</td>
-                    <form method="post" action="{% url 'checkout' producto.pk %}">
-                        <td>
-
-                            {% csrf_token %}
-                            {{ compra_form.unidades }}
-
-                            {% if errorInsuficientesUnidades %}
-                                <div class="alert alert-danger">{{ errorInsuficientesUnidades }}
-                                    <b>{{ productos.nombre }}</b>.
-                                </div>
-                            {% endif %}
-
-                        </td>
-                        <td>
-                            <a href="">
-                                <button type="submit" class="btn btn-primary">Comprar</button>
-                            </a>
-                        </td>
-                    </form>
-                </tr>
-            {% endfor %}
-            </tbody>
+        </thread>
+        <tbody>
+        {% for producto in productos %}
+            <tr>
+                <td>{{ producto.nombre }}</td>
+                <td>{{ producto.marca }}</td>
+                <td>{{ producto.modelo }}</td>
+                <td>{{ producto.unidades }}</td>
+                <td>{{ producto.precio }} €</td>
+                <td>{{ producto.detalles }}</td>
+                <form method="post" action="{% url 'checkout' producto.pk %}">
+                    <td>
+                        {% csrf_token %}
+                        {{ compra_form.unidades }}
+                    </td>
+                    <td>
+                        <button type="submit" class="btn btn-primary">Comprar</button>
+                    </td>
+                </form>
+            </tr>
+        {% endfor %}
+        </tbody>
     </table>
+
 
     <a href="{% url 'welcome' %}">
         <input type="button" class="btn btn-secondary" value="Atrás">

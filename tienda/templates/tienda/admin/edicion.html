@@ -4,10 +4,7 @@
     <h2>Edición</h2>
 
     <form method="post">
-
         <fieldset>
-
-            <legend>Formulario producto</legend>
 
             {% csrf_token %}
             {{ producto_form.as_div }}
@@ -29,7 +26,6 @@
             {% endif %}
 
         </fieldset>
-
     </form>
 
 {% endblock %}

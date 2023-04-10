@@ -55,10 +55,15 @@ def nuevo(request):
     producto_form = ProductoForm()
 
     if request.method == "POST":
-        form = ProductoForm(request.POST)
+        producto_form = ProductoForm(request.POST)
 
-        if form.is_valid():
-            producto = form.save(commit=False)
+        if producto_form.is_valid():
+            if compra.unidades > producto_form.unidades:
+                errorInsuficientesUnidades = "No hay suficientes unidades disponibles de "
+                return render(request, 'tienda/compra.html',
+                              {'productos': producto_form,
+                               'errorInsuficientesUnidades': errorInsuficientesUnidades})
+            producto = producto_form.save(commit=False)
             producto.save()
             return redirect('listado')
 
@@ -70,7 +75,6 @@ def compra(request):
 
     if request.method == 'POST':
         compra_form = CompraForm(request.POST)
-
         if compra_form.is_valid():
             compra = compra_form.save(commit=False)
             compra.producto = producto
@@ -79,14 +83,15 @@ def compra(request):
 
             if compra.unidades > producto.unidades:
                 errorInsuficientesUnidades = "No hay suficientes unidades disponibles de "
-                return render(request, 'tienda/compra.html',
-                              {'productos': producto, 'compra_form': compra_form,
-                               'errorInsuficientesUnidades': errorInsuficientesUnidades})
+                return render(request, 'tienda/checkout.html', {'productos': producto, 'compra_form': compra_form,
+                                                                'errorInsuficientesUnidades': errorInsuficientesUnidades,
+                                                                'compra': compra})
 
             producto.unidades -= compra.unidades
             producto.save()
             compra.save()
             return redirect('compra')
+        return render(request, 'tienda/checkout.html', {'productos': producto})
 
     else:
         compra_form = CompraForm()
@@ -97,10 +102,8 @@ def compra(request):
 @transaction.atomic()
 def checkout(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
-
-    if request.method == 'POST':
-        compra_form = CompraForm(request.POST)
-
+    if request.method == 'GET':
+        compra_form = CompraForm(request.GET)
         if compra_form.is_valid():
             compra = compra_form.save(commit=False)
             compra.producto = producto
@@ -109,18 +112,16 @@ def checkout(request, pk):
 
             if compra.unidades > producto.unidades:
                 errorInsuficientesUnidades = "No hay suficientes unidades disponibles de "
-                return render(request, 'tienda/checkout.html',
-                              {'productos': producto, 'compra_form': compra_form,
-                               'errorInsuficientesUnidades': errorInsuficientesUnidades})
+                return render(request, 'tienda/checkout.html', {'productos': producto, 'compra_form': compra_form,
+                                                                'errorInsuficientesUnidades': errorInsuficientesUnidades,
+                                                                'compra': compra})
 
             producto.unidades -= compra.unidades
             producto.save()
             compra.save()
             return redirect('compra')
-
     else:
         compra_form = CompraForm()
-
     return render(request, 'tienda/checkout.html', {'productos': producto, 'compra_form': compra_form})
 
 
