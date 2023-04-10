@@ -16,7 +16,6 @@ class CompraForm(forms.ModelForm):
     class Meta:
         model = Compra
         fields = ['unidades']
-        unidades = forms.IntegerField(min_value=1)
 
 
 class FiltroForm(forms.ModelForm):
@@ -34,4 +33,4 @@ class MarcaForm(forms.Form):
 
 
 class UsuarioForm(forms.Form):
-    usuario = forms.ModelChoiceField(queryset=User.objects.all())
+    usuario = forms.ModelChoiceField(queryset=User.objects.all(), required=False)

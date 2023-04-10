@@ -26,7 +26,7 @@ class Producto(models.Model):
 class Compra(models.Model):
     producto = models.ForeignKey(Producto, models.PROTECT)
     fecha = models.DateTimeField(default=timezone.now)
-    unidades = models.PositiveIntegerField()
+    unidades = models.PositiveIntegerField(validators=[MinValueValidator(1)])
     importe = models.DecimalField(max_digits=8, decimal_places=2, validators=[MinValueValidator(0.00)])
     usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
 

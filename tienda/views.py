@@ -67,7 +67,31 @@ def nuevo(request):
 
 def compra(request):
     producto = Producto.objects.all()
-    return render(request, 'tienda/compra.html', {'productos': producto})
+
+    if request.method == 'POST':
+        compra_form = CompraForm(request.POST)
+
+        if compra_form.is_valid():
+            compra = compra_form.save(commit=False)
+            compra.producto = producto
+            compra.importe = compra.unidades * producto.precio
+            compra.usuario = request.user
+
+            if compra.unidades > producto.unidades:
+                errorInsuficientesUnidades = "No hay suficientes unidades disponibles de "
+                return render(request, 'tienda/compra.html',
+                              {'productos': producto, 'compra_form': compra_form,
+                               'errorInsuficientesUnidades': errorInsuficientesUnidades})
+
+            producto.unidades -= compra.unidades
+            producto.save()
+            compra.save()
+            return redirect('compra')
+
+    else:
+        compra_form = CompraForm()
+
+    return render(request, 'tienda/compra.html', {'productos': producto, 'compra_form': compra_form})
 
 
 @transaction.atomic()
@@ -88,12 +112,6 @@ def checkout(request, pk):
                 return render(request, 'tienda/checkout.html',
                               {'productos': producto, 'compra_form': compra_form,
                                'errorInsuficientesUnidades': errorInsuficientesUnidades})
-
-            if compra.unidades == 0:
-                errorCeroUnidades = "La cantidad de unidades debe ser mayor que 0."
-                return render(request, 'tienda/checkout.html',
-                              {'productos': producto, 'compra_form': compra_form,
-                               'errorCeroUnidades': errorCeroUnidades})
 
             producto.unidades -= compra.unidades
             producto.save()

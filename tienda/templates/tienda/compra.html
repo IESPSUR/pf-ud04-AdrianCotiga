@@ -11,7 +11,7 @@
             <th>Unidades</th>
             <th>Precio</th>
             <th>Detalles</th>
-            <th></th>
+            <th>Uds. a comprar</th>
             <th></th>
 
             {% for producto in productos %}
@@ -26,11 +26,25 @@
                     <td>{{ producto.unidades }}</td>
                     <td>{{ producto.precio }}</td>
                     <td>{{ producto.detalles }}</td>
-                    <td>
-                        <a href="{% url 'checkout' producto.pk %}">
-                            <button type="submit" class="btn btn-primary">Comprar</button>
-                        </a>
-                    </td>
+                    <form method="post" action="{% url 'checkout' producto.pk %}">
+                        <td>
+
+                            {% csrf_token %}
+                            {{ compra_form.unidades }}
+
+                            {% if errorInsuficientesUnidades %}
+                                <div class="alert alert-danger">{{ errorInsuficientesUnidades }}
+                                    <b>{{ productos.nombre }}</b>.
+                                </div>
+                            {% endif %}
+
+                        </td>
+                        <td>
+                            <a href="">
+                                <button type="submit" class="btn btn-primary">Comprar</button>
+                            </a>
+                        </td>
+                    </form>
                 </tr>
             {% endfor %}
             </tbody>
