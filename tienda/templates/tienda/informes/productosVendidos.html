@@ -14,8 +14,10 @@
         <tbody>
         {% for producto in productos_vendidos %}
             <tr>
-                <td>{{ producto.nombre }}</td>
-                <td>{{ producto.total_vendido }}</td>
+{#                <td>{{ producto.nombre }}</td>#}
+{#                <td>{{ producto.total_vendido }}</td>#}
+                <td>{{ compra.producto }}</td>
+                <td>{{ compra.unidades }}</td>
             </tr>
         {% endfor %}
         </tbody>

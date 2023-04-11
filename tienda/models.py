@@ -32,3 +32,5 @@ class Compra(models.Model):
 
     def __str__(self):
         return str(self.fecha)
+
+    # , self.usuario, self.producto

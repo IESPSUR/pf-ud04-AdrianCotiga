@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.models import User
 from django.db import transaction
 from django.db.models import Sum
@@ -21,6 +22,9 @@ def listado(request):
 
             if nombre:
                 producto = Producto.objects.filter(nombre__icontains=nombre)
+
+                if not producto:
+                    messages.error(request, "Producto " + nombre + " no existe")
 
     return render(request, 'tienda/admin/listado.html', {'productos': producto, 'filtro_form': filtro_nombre})
 
@@ -117,9 +121,10 @@ def productosMarca(request):
 
 
 def productosVendidos(request):
-    productos_vendidos = Producto.objects.annotate(total_vendido=Sum('compra__unidades')).order_by('-total_vendido')[
-                         :10]
-
+    # productos_vendidos = Producto.objects.annotate(total_vendido=Sum('compra__unidades')).order_by('-total_vendido')[
+    #                      :10]
+    productos_vendidos = Compra.objects.annotate(total_vendido=Sum('unidades')).order_by('-total_vendido')[:10]
+    print(productos_vendidos)
     return render(request, 'tienda/informes/productosVendidos.html', {'productos_vendidos': productos_vendidos})
 
 
