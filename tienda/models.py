@@ -31,6 +31,4 @@ class Compra(models.Model):
     usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return str(self.fecha)
-
-    # , self.usuario, self.producto
+        return str(self.fecha, self.usuario, self.producto)
