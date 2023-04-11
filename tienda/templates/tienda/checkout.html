@@ -9,8 +9,6 @@
             <th>Unidades</th>
             <th>Precio</th>
             <th>Detalles</th>
-            <th>Uds. a comprar</th>
-            <th>Importe total</th>
         </thread>
         <tbody>
         <tr>
@@ -18,26 +16,24 @@
             <td>{{ productos.marca }}</td>
             <td>{{ productos.modelo }}</td>
             <td>{{ productos.unidades }}</td>
-            <td>{{ productos.precio }} €</td>
+            <td>{{ productos.precio }}€</td>
             <td>{{ productos.detalles }}</td>
-            <td>{{ compra.unidades }}</td>
-            <td>{{ compra.importe }} €</td>
         </tr>
         </tbody>
     </table>
 
-    <form method="get">
-        <fieldset>
-            {% csrf_token %}
-            {{ compra_form.unidades }}
+    <form method="post">
+        {% csrf_token %}
 
+        <p>¿Comprar {{ compra.unidades }} unidades de <b>{{ productos.nombre }}</b> por {{ compra.importe }}€ ?</p>
+
+        <a href="{% url 'compra' %}">
             <button type="submit" class="btn btn-primary">Confirmar</button>
+        </a>
+        <a href="{% url 'compra' %}">
+            <button type="button" class="btn btn-secondary">Cancelar</button>
+        </a>
 
-            <a href="{% url 'compra' %}">
-                <button type="button" class="btn btn-secondary">Volver</button>
-            </a>
-
-        </fieldset>
     </form>
 
 {% endblock %}

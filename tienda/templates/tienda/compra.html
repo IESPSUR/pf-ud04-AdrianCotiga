@@ -20,9 +20,9 @@
                 <td>{{ producto.marca }}</td>
                 <td>{{ producto.modelo }}</td>
                 <td>{{ producto.unidades }}</td>
-                <td>{{ producto.precio }} €</td>
+                <td>{{ producto.precio }}€</td>
                 <td>{{ producto.detalles }}</td>
-                <form method="post" action="{% url 'checkout' producto.pk %}">
+                <form method="get" action="{% url 'checkout' producto.pk %}">
                     <td>
                         {% csrf_token %}
                         {{ compra_form.unidades }}
@@ -35,7 +35,6 @@
         {% endfor %}
         </tbody>
     </table>
-
 
     <a href="{% url 'welcome' %}">
         <input type="button" class="btn btn-secondary" value="Atrás">
