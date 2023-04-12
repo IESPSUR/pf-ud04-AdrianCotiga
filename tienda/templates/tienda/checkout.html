@@ -12,12 +12,12 @@
         </thread>
         <tbody>
         <tr>
-            <td>{{ productos.nombre }}</td>
-            <td>{{ productos.marca }}</td>
-            <td>{{ productos.modelo }}</td>
-            <td>{{ productos.unidades }}</td>
-            <td>{{ productos.precio }}€</td>
-            <td>{{ productos.detalles }}</td>
+            <td>{{ producto.nombre }}</td>
+            <td>{{ producto.marca }}</td>
+            <td>{{ producto.modelo }}</td>
+            <td>{{ producto.unidades }}</td>
+            <td>{{ producto.precio }}€</td>
+            <td>{{ producto.detalles }}</td>
         </tr>
         </tbody>
     </table>
@@ -26,7 +26,7 @@
         {% csrf_token %}
         {{ form.unidades }}
 
-        <p>¿Comprar {{ compra.unidades }} unidades de <b>{{ productos.nombre }}</b> por {{ compra.importe }}€ ?</p>
+        <p>¿Comprar {{ unidades }} unidades de <b>{{ producto.nombre }}</b> por {{ precio_total }}€ ?</p>
 
         <a href="{% url 'compra' %}">
             <button type="submit" class="btn btn-primary">Confirmar</button>

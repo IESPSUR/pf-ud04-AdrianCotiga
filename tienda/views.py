@@ -97,7 +97,7 @@ def checkout(request, pk):
 
             if unidades < producto.unidades:
                 importe = unidades * producto.unidades
-                compra = Compra(producto=producto)
+                compra = Compra()
                 compra.save()
                 producto.unidades -= unidades
                 producto.save()
