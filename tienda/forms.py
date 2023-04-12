@@ -17,6 +17,12 @@ class CompraForm(forms.ModelForm):
         model = Compra
         fields = ['unidades']
 
+class CheckoutForm(forms.ModelForm):
+    unidades = forms.IntegerField(widget=forms.HiddenInput)
+    class Meta:
+        model = Compra
+        fields = ['unidades']
+
 
 class FiltroForm(forms.ModelForm):
     nombre = forms.CharField(required=False)
