@@ -24,17 +24,12 @@
 
     <form method="post">
         {% csrf_token %}
-        {{ form.unidades }}
+        {{ checkout_form.unidades }}
 
-        <p>¿Comprar {{ unidades }} unidades de <b>{{ producto.nombre }}</b> por {{ precio_total }}€ ?</p>
+        <p>¿Comprar <b>{{ compra_unidades }}</b> unidades de <b>{{ producto.nombre }}</b> por <b>{{ precio_total }}</b>€ ?</p>
 
-        <a href="{% url 'compra' %}">
-            <button type="submit" class="btn btn-primary">Confirmar</button>
-        </a>
-        <a href="{% url 'compra' %}">
-            <button type="button" class="btn btn-secondary">Cancelar</button>
-        </a>
-
+        <button type="submit" class="btn btn-primary">Confirmar</button>
+        <a href="{% url 'compra' %}" class="btn btn-secondary">Cancelar</a>
     </form>
 
 {% endblock %}
