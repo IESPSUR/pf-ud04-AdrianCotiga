@@ -78,14 +78,13 @@ def compra(request):
 
 @transaction.atomic()
 def checkout(request, pk):
-
     producto = get_object_or_404(Producto, pk=pk)
-    # compra_unidades = int(request.GET.get('unidades'))
-    compra_unidades = 0;
+    compra_unidades = int(request.GET.get('unidades'))
     importe = 0
 
     if request.method == 'GET':
         compra_form = CompraForm(request.GET)
+
         if compra_form.is_valid():
             compra_unidades = compra_form.cleaned_data['unidades']
             precio_total = producto.precio * compra_unidades
@@ -99,7 +98,7 @@ def checkout(request, pk):
                 return redirect('compra')
         else:
             messages.error(request, "Error")
-            return  redirect('compra')
+            return redirect('compra')
 
     elif request.method == 'POST':
         importe = compra_unidades * producto.precio
